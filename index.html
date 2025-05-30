@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Shopee Auto Accept</title>
+</head>
+<body>
+  <h1>Shopee Auto Accept Order</h1>
+  <button onclick="startScript()">Run Bot</button>
+  <pre id="output" style="background:#000;color:#0f0;padding:10px;height:400px;overflow:auto;"></pre>
+
+  <script>
+    const { spawn } = require('child_process');
+    let child;
+
+    function startScript() {
+      const output = document.getElementById('output');
+      output.innerText = '⏳ Menjalankan script...\n';
+
+      child = spawn('node', ['index.js']);
+
+      child.stdout.on('data', (data) => {
+        output.innerText += data.toString();
+        output.scrollTop = output.scrollHeight;
+      });
+
+      child.stderr.on('data', (data) => {
+        output.innerText += '[ERROR] ' + data.toString();
+        output.scrollTop = output.scrollHeight;
+      });
+
+      child.on('close', (code) => {
+        output.innerText += `\n✅ Script selesai dengan kode ${code}`;
+      });
+    }
+  </script>
+</body>
+</html>
