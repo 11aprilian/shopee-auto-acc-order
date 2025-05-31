@@ -31,14 +31,19 @@ puppeteer.use(StealthPlugin());
     console.log('Silakan login dan verifikasi OTP manual...');
 
     try {
-      await page.waitForFunction(
-        () =>
-        //   !window.location.href.includes('login') 
-        //   &&
-          !document.body.innerText.toLowerCase().includes('link verifikasi')
-          ,
-        { timeout: 10 * 60 * 1000 }
-      );
+      // await page.waitForFunction(
+      //   () =>
+      //      !window.location.href.includes('login') 
+      //      &&
+      //     !document.body.innerText.toLowerCase().includes('link verifikasi')
+      //     ,
+      //   { timeout: 10 * 60 * 1000 }
+      // );
+
+      await page.waitForFunction(() => {
+        const url = window.location.href;
+        return !url.includes('/verify');
+      }, { timeout: 10 * 60 * 1000 });
 
       await page.waitForNavigation({ waitUntil: 'networkidle2' });
       console.log('Login dan verifikasi berhasil!');
